@@ -1,0 +1,50 @@
+* { padding: 0; margin: 0; box-sizing: border-box; }
+
+html, body {
+    height: 100%;
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: #212121;
+    color: #F5F5F5;
+    user-select: none;
+}
+
+button {
+    position: relative;
+    color: #F5F5F5;
+    border: none;
+    background-color: #455A64;
+    font-weight: bold;
+    font-size: 1.2rem;
+    padding: 1rem 1.2rem;
+    cursor: pointer;
+    scale: 1;
+    transition-duration: 0.1s;
+
+    &:hover {
+        scale: 1.02 1.05;
+    }
+    
+    &:active {
+        scale: 1.05 1;
+    }
+
+    .cost, .hint {
+        position: absolute;
+        bottom: 100%;
+        padding: 5px 10px;
+        font-size: 1.2rem;
+    }
+
+    .cost {
+        right: 0;
+        color: #81C784;
+        pointer-events: none;
+    }
+
+    .hint {
+        left: 0;
+        color: #E0E0E0;
+        pointer-events: none;
+    }
+}
+
