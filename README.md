@@ -1,5 +1,7 @@
 ## Idle Orbs: Remastered
 
+Deploy link here: https://jacoby-y.github.io/idle-orbs-remastered/
+
 Hello peeps. This is my attempt at remaking, and remastering, my very first Idle Orbs game.
 I did this for two reasons:
 
