@@ -14,5 +14,10 @@
     main {
         padding: 2rem;
         font-size: 1.5rem;
+        line-height: 2.5rem;
+
+        h3 {
+            font-weight: normal;
+        }
     }
 </style>

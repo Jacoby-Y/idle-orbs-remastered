@@ -49,7 +49,7 @@ export function tryCollectOrb(orb: Orb): [number, number] {
 }
 
 export function collectorAttractOrb(orb: Orb) {
-    const attract_speed = 0.002;
+    const attract_speed = 0.005;
 
     if (orb.x < canvas_size.center.x && orb.y > canvas_size.center.y) {
         orb.vx -= attract_speed;
@@ -57,13 +57,15 @@ export function collectorAttractOrb(orb: Orb) {
 
         // strokeLine(orb.x, orb.y, orb.x - 20, orb.y + 20, "red", 2);
     }
-    else if (orb.x > canvas_size.center.x && orb.y < canvas_size.center.y) {
+    
+    if (orb.x > canvas_size.center.x && orb.y < canvas_size.center.y) {
         orb.vx += attract_speed;
         orb.vy -= attract_speed;
 
         // strokeLine(orb.x, orb.y, orb.x + 20, orb.y - 20, "red", 2);
     }
-    else if (orb.x > canvas_size.center.x && orb.y > canvas_size.center.y) {
+    
+    if (orb.x > canvas_size.center.x && orb.y > canvas_size.center.y) {
         orb.vx += attract_speed;
         orb.vy += attract_speed;
 

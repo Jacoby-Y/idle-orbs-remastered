@@ -10,9 +10,11 @@ import { collectorAttractOrb, tryCollectOrb } from "../Collectors/Collectors";
 import { getRandomWeightedOrbs } from "../Upgrades/OrbUpgrades";
 import { $stats } from "../GlobalStats/GlobalStats";
 import { addCash } from "../../stores/Currency";
+import { $settings, RenderMode } from "../Settings/Settings";
+import { tracker } from "../Tracker/Tracker";
 
 
-const orbs: Orb[] = [];
+let orbs: Orb[] = [];
 
 
 export function orbUpdate() {
@@ -54,6 +56,9 @@ export function spawnWeightedOrbs(mini = false) {
 }
 
 export function spawnOrb(type: OrbType, mini = false): Orb {
+    if (mini) tracker.update(v => (v.idle_orbs_spawned++, v));
+    else tracker.update(v => (v.manual_orbs_spawned++, v));
+
     const ang = spawn_angle + (Math.random() * 0.8 - 0.4);
     const speed = ((orb_const[type].speed_mult ?? 1) * (1 + Math.random() * 0.1)) * 0.5;
 
@@ -69,33 +74,60 @@ export function spawnOrb(type: OrbType, mini = false): Orb {
 
     orb_const[new_orb.type].onSpawn?.(new_orb);
 
+
+
     return new_orb;
 }
 
 function drawOrb(orb: Orb) {
-    fillCircle(
-        orb.x, orb.y,
-        orb_radius / (orb.mini ? 2 : 1),
-        orb_const[orb.type].color
-    );
+    const r = orb_radius / (orb.mini ? 2 : 1);
+    const r2 = r * 2;
+    const { x, y } = orb;
+    const color = orb_const[orb.type].color;
 
-    // strokeCircle(
-    //     orb.x, orb.y,
-    //     orb_radius / (orb.mini ? 2 : 1),
-    //     orb_const[orb.type].color,
-    //     2
-    // );
-
-    // fillRect(
-    //     orb.x - orb_radius, orb.y - orb_radius,
-    //     orb_radius * 2, orb_radius * 2,
-    //     orb_const[orb.type].color
-    // );
+    switch ($settings.render_mode) {
+        case RenderMode.Circle:
+            fillCircle(
+                x, y,
+                r,
+                color
+            );
+            break;
+        case RenderMode.Wireframe:
+            strokeCircle(
+                x, y,
+                r,
+                color, 
+                2
+            );
+            break;
+        case RenderMode.Square:
+            fillRect(
+                x-r, y-r,
+                r2, r2,
+                color
+            );
+            break;
+        case RenderMode.Pixelated:
+            fillRect(
+                Math.floor((x-r) / r2)*r2, Math.floor((y-r) / r2)*r2,
+                r2, r2,
+                color
+            );
+            break;
+        case RenderMode.Sand:
+            fillRect(
+                x-2, y-2,
+                4, 4,
+                color
+            )
+            break;
+    }
 }
 
 function moveOrb(orb: Orb) {
-    orb.x += orb.vx * (time.delta / 2);
-    orb.y += orb.vy * (time.delta / 2);
+    orb.x += orb.vx * (time.delta / 1);
+    orb.y += orb.vy * (time.delta / 1);
 
     // orb.vx -= 0.001;
     // orb.vy += 0.001;
@@ -133,10 +165,19 @@ function getOrbValue(type: OrbType) {
 }
 
 
+export function resetOrbs() {
+    orbs = [];
+}
+
+
+let prev_click = performance.now();
 signal.listen("ClickCanvas", ()=>{
-    // spawnOrb(OrbType.Sniper);
+    if (performance.now() - prev_click < 100) return;
+    prev_click = performance.now();
+
     spawnWeightedOrbs();
-    // for (let i = 0; i < 100; i++) clickSpawnOrb();
+
+    /// Other orb ideas?
     // spawnOrb(OrbType.Gold);
     // spawnOrb(OrbType.Mana);
     // spawnOrb(OrbType.Turret);

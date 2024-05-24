@@ -15,13 +15,13 @@
 
 <main>
     {#key $orb_upgrade_levels}
-        {#each orb_upgrade_types as upgr_type}
-            {#if $unlocked_orbs.has(upgr_type)}
-            {@const upgr = orb_upgrades[upgr_type]}
-            {@const [min_weight, chance_weight] = getOrbWeightPerc(upgr_type)}
+        {#each orb_upgrade_types as orb_type}
+            {#if $unlocked_orbs.has(orb_type)}
+            {@const upgr = orb_upgrades[orb_type]}
+            {@const [min_weight, chance_weight] = getOrbWeightPerc(orb_type)}
                 <div class="upgrade-wrapper">
-                    <h3 class="name">
-                        {upgr_type}
+                    <h3 class="name" style="color: {orb_const[orb_type].color};">
+                        {orb_type}
                     </h3>
                     <h3 class="stats">
                         {#if min_weight > 0} {min_weight.fmt(1)} + {/if}
@@ -31,12 +31,12 @@
                     </h3>
                     <button on:click={()=> buyUpgrade(upgr.weight)}>
                         Weight +1
-                        <h3 class="cost">${upgr.weight.cost.fmt(1)}</h3>
+                        <h3 class="cost" class:no-afford={getCash() < upgr.weight.cost}>${upgr.weight.cost.fmt(1)}</h3>
                         <h3 class="hint">[{(upgr.weight.stat_change * 10).fmt(1)}]</h3>
                     </button>
                     <button on:click={()=> buyUpgrade(upgr.value)}>
                         Value +1
-                        <h3 class="cost">${upgr.value.cost.fmt(1)}</h3>
+                        <h3 class="cost" class:no-afford={getCash() < upgr.value.cost}>${upgr.value.cost.fmt(1)}</h3>
                     </button>
         
                     <h3 class="hint-icon">
@@ -44,7 +44,7 @@
                     </h3>
         
                     <h3 class="desc">
-                        {orb_const[upgr_type].desc}
+                        {orb_const[orb_type].desc}
                     </h3>
                 </div>
             {:else}
@@ -101,18 +101,18 @@
         }
 
         .hint-icon:hover + .desc {
-            transform: translate(-1rem, -50%);
+            transform: translate(5px, -50%);
             opacity: 1;
         }
 
         .desc {
             position: absolute;
-            left: 100%;
+            left: 2rem;
             top: 50%;
             background-color: #37474F;
-            width: 15rem;
+            width: 16.4rem;
             padding: 1rem 1.2rem;
-            transform: translate(0, -50%);
+            transform: translate(15px, -50%);
             opacity: 0;
             pointer-events: none;
             transition-duration: 0.3s;

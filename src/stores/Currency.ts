@@ -8,7 +8,7 @@ import signal from "cobys-epic-engine/signal";
 //#region | Cash ($)
 export const max_cash = 1e15;
 let deci = 0;
-export const cash = writable(10000); // 1e14
+export const cash = writable(0); // 1e14
 cash.subscribe((v)=>{
 	// if (get(got_cash) == false && v > 0) got_cash.set(true);
 
@@ -130,4 +130,7 @@ window.onkeydown = ({ key })=>{
 		cash.set(0);
 	}
 	else if (!isNaN(parseInt(key))) addCash(10 ** (parseInt(key) + 3));
+	if (key == "m") addMana(100);
+	if (key == "M") addMana(1000);
+
 }

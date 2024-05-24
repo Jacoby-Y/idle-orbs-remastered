@@ -1,12 +1,16 @@
 <script lang="ts">
     import Stats from "./other/Stats.svelte";
     import Nav from "./Nav.svelte";
+    import Settings from "./other/Settings.svelte";
+    import Achievements from "./other/Achievements.svelte";
 
     let tabs = ["Stats", "Settings", "Achievements"];
     let chosen_tab = tabs[0];
 
     const tab_comps = {
-        Stats: Stats,
+        Stats,
+        Settings,
+        Achievements,
     }
 
 </script>

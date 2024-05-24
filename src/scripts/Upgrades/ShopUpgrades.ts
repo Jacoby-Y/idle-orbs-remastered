@@ -24,11 +24,10 @@ export const shop_upgrades: { [key in ShopUpgradeID]: ShopUpgrade } = {
         desc: "Increases the value multiplier of all Orbs",
         init_stat_change: 1,
         stat_change: 0.2,
-        get name() { return `Orb Value: +0.2` },
-        get hint() { return `[${$stats?.orb_value.fmt(1)}]` },
+        get name() { return `Orb Value: +20%` },
+        get hint() { return `[${Math.round($stats?.orb_value * 100 - 100).fmt(1)}%]` },
         init_cost: 250,
         mult: 1.2,
-        cost: 1
     },
     idle_speed: {
         desc: "Idley spawn Orbs at half value",
@@ -38,7 +37,6 @@ export const shop_upgrades: { [key in ShopUpgradeID]: ShopUpgrade } = {
         get hint() { return `[${$stats?.idle_speed.fmt(1)}/sec]` },
         init_cost: 500,
         mult: 1.2,
-        cost: 1
     },
     burst_chance: {
         desc: "Increase chance to spawn a burst of Orbs",
@@ -48,7 +46,6 @@ export const shop_upgrades: { [key in ShopUpgradeID]: ShopUpgrade } = {
         get hint() { return `[${$stats?.burst_chance.toPerc().fmt(1)}%]` },
         init_cost: 500,
         mult: 2,
-        cost: 1
     },
     burst_amount: {
         desc: "Increase burst amount",
@@ -58,7 +55,6 @@ export const shop_upgrades: { [key in ShopUpgradeID]: ShopUpgrade } = {
         get hint() { return `[${$stats?.burst_amount.fmt(0)}]` },
         init_cost: 1000,
         mult: 10,
-        cost: 1
     },
     /// Should definitely be a prestige upgrade
     // starting_cash: {
@@ -69,15 +65,14 @@ export const shop_upgrades: { [key in ShopUpgradeID]: ShopUpgrade } = {
     //     get hint() { return `[${$stats?.starting_cash.fmt(0)}]` },
     //     init_cost: 1000,
     //     mult: 1.5,
-    //     cost: 1
     // },
     new_orb: {
         desc: "Unlock a new Orb for you to upgrade and spawn",
         get name() { return `Unlock New Orb` },
-        get hint() { return `[${$shop_upgrade_levels.new_orb}]` },
+        get hint() { return `[${$shop_upgrade_levels.new_orb + 1}]` },
         init_cost: 5000,
         mult: 10,
-        cost: 1
+        max_level: 3
     }
 }
 
@@ -95,5 +90,5 @@ Object.entries(shop_upgrades).forEach(([id, upgr]) => {
 // For fixing import issues with GlobalStats.ts
 import("../GlobalStats/GlobalStats").then(({ stats })=>{
     stats.subscribe(v => $stats = v);
-    shop_upgrade_levels.update(_);
+    shop_upgrade_levels.update(v => v);
 });

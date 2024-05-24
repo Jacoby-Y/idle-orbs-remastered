@@ -4,7 +4,7 @@ type BaseUpgrade<T = any> = {
     hint?: string
     init_cost: number
     mult: number
-    cost: number
+    cost?: number
 } & T
 
 type ShopUpgradeID = ("orb_value" | "idle_speed" | "burst_chance" | "burst_amount" | "new_orb");
@@ -13,6 +13,7 @@ type ShopUpgrade = BaseUpgrade<{
     desc: string
     init_stat_change?: number
     stat_change?: number
+    max_level?: number
 }>;
 
 type OrbUpgradeLevels = {

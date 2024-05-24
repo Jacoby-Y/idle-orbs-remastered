@@ -52,6 +52,7 @@
             cursor: pointer;
             border: 2px solid #455A64;
             transition-duration: 0.1s;
+            font-size: 1.4rem;
 
             &:not(.selected) {
                 background-color: #455A64;
